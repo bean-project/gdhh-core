@@ -4,6 +4,9 @@ namespace App\Entity\User\Base;
 use App\Entity\HoSo\ThanhVien;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
+use FOS\UserBundle\Model\User as AbstractUser;
+
 /** @ORM\MappedSuperclass */
 class AppUser extends AbstractUser{
 	
