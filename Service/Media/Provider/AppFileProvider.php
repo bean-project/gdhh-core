@@ -1,6 +1,15 @@
 <?php
 namespace App\Service\Media\Provider;
 
+use Gaufrette\Filesystem;
+use Sonata\MediaBundle\CDN\CDNInterface;
+use Sonata\MediaBundle\Generator\GeneratorInterface;
+use Sonata\MediaBundle\Metadata\MetadataBuilderInterface;
+use Sonata\MediaBundle\Model\MediaInterface;
+use Sonata\MediaBundle\Provider\FileProvider;
+use Sonata\MediaBundle\Thumbnail\ThumbnailInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 
 class AppFileProvider extends FileProvider
 {

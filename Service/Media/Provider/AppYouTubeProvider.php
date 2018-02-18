@@ -2,6 +2,18 @@
 namespace App\Service\Media\Provider;
 
 
+use Buzz\Browser;
+use Gaufrette\Filesystem;
+use Sonata\MediaBundle\CDN\CDNInterface;
+use Sonata\MediaBundle\Generator\GeneratorInterface;
+use Sonata\MediaBundle\Metadata\MetadataBuilderInterface;
+use Sonata\MediaBundle\Model\MediaInterface;
+
+use Sonata\MediaBundle\Provider\YouTubeProvider;
+use Sonata\MediaBundle\Thumbnail\ThumbnailInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+
 class AppYouTubeProvider extends YouTubeProvider
 {
 
