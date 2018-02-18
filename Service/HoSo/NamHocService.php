@@ -1,12 +1,9 @@
 <?php
 
 namespace App\Service\HoSo;
-use AppBundle\Entity\BinhLe\ThieuNhi\BangDiem;
-use AppBundle\Entity\BinhLe\ThieuNhi\NamHoc;
-use AppBundle\Entity\BinhLe\ThieuNhi\PhanBo;
-use AppBundle\Entity\BinhLe\ThieuNhi\TruongPhuTrachDoi;
-use AppBundle\Service\BaseService;
-use AppBundle\Service\SpreadsheetWriter;
+
+use App\Entity\HoSo\NamHoc;
+use App\Service\BaseService;
 
 class NamHocService extends BaseService {
 	

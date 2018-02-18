@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service\Data;
+use App\Service\BaseService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ExcelService extends BaseService {
