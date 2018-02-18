@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\User\Base;
 
 use App\Entity\HoSo\ThanhVien;
@@ -8,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as AbstractUser;
 
 /** @ORM\MappedSuperclass */
-class AppUser extends AbstractUser{
+class AppUser extends AbstractUser {
 	
 	const ROLE_ADMIN = 'ROLE_ADMIN';
 	const ROLE_HUYNH_TRUONG = 'ROLE_HUYNH_TRUONG';
@@ -22,7 +23,7 @@ class AppUser extends AbstractUser{
 	protected $id;
 	
 	function __construct() {
-
+		parent::__construct();
 	}
 	
 	/**
