@@ -4,9 +4,10 @@ namespace App\Entity\User\Base;
 use App\Entity\HoSo\ThanhVien;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as AbstractedUser;
 
 /** @ORM\MappedSuperclass */
-class AppUser {
+class AppUser extends AbstractedUser{
 	
 	const ROLE_ADMIN = 'ROLE_ADMIN';
 	const ROLE_HUYNH_TRUONG = 'ROLE_HUYNH_TRUONG';
