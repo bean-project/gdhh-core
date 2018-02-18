@@ -20,7 +20,7 @@ class AppUser {
 	protected $id;
 	
 	function __construct() {
-		parent::__construct();
+
 	}
 	
 	/**
