@@ -1,11 +1,12 @@
 <?php
 namespace App\Doctrine\ORM\Listener\HoSo;
 
+use App\Doctrine\ORM\Listener\DoctrineEntityListenerInterface;
 use App\Entity\HoSo\PhanBo;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class PhanBoListener{
+class PhanBoListener implements DoctrineEntityListenerInterface {
 	/**
 	 * @var ContainerInterface
 	 */

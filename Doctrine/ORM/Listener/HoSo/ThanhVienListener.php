@@ -2,13 +2,14 @@
 
 namespace App\Doctrine\ORM\Listener\HoSo;
 
+use App\Doctrine\ORM\Listener\DoctrineEntityListenerInterface;
 use App\Entity\HoSo\NamHoc;
 use App\Entity\HoSo\ThanhVien;
 use App\Service\HoSo\NamHocService;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ThanhVienListener {
+class ThanhVienListener implements DoctrineEntityListenerInterface {
 	/**
 	 * @var ContainerInterface
 	 */
