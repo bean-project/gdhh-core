@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Entity\HoSo;
 
-use App\Entity\Content\Base\AppContentEntity;
-use App\Entity\NLP\Sense;
-use App\Entity\User\User;
+use App\Entity\HocBa\BangDiem;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Exception\InvalidArgumentException;
