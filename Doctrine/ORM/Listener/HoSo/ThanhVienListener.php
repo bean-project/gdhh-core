@@ -4,6 +4,7 @@ namespace App\Doctrine\ORM\Listener\HoSo;
 
 use App\Entity\HoSo\NamHoc;
 use App\Entity\HoSo\ThanhVien;
+use App\Service\HoSo\NamHocService;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -46,7 +47,7 @@ class ThanhVienListener {
 			$object->setPhanDoan(ThanhVien::$danhSachChiDoan[ $chiDoan ]);
 		}
 		
-		$namHocHienTai = $this->container->get('app.binhle_thieunhi_namhoc')->getNamHocHienTai();
+		$namHocHienTai = $this->container->get(NamHocService::class)->getNamHocHienTai();
 		if(empty($object->getNamHoc())) {
 			$object->setNamHoc($namHocHienTai->getId());
 		}
