@@ -14,8 +14,12 @@ class ThanhVienListener {
 	 */
 	private $container;
 	
-	function __construct(ContainerInterface $container) {
-		$this->container = $container;
+	/** @var NamHocService */
+	private $namHocService;
+	
+	function __construct(NamHocService $nam_hoc_service, ContainerInterface $container) {
+		$this->container     = $container;
+		$this->namHocService = $nam_hoc_service;
 	}
 	
 	private function updateProperties(ThanhVien $object, LifecycleEventArgs $event) {
@@ -47,7 +51,7 @@ class ThanhVienListener {
 			$object->setPhanDoan(ThanhVien::$danhSachChiDoan[ $chiDoan ]);
 		}
 		
-		$namHocHienTai = $this->container->get(NamHocService::class)->getNamHocHienTai();
+		$namHocHienTai = $this->namHocService->getNamHocHienTai();
 		if(empty($object->getNamHoc())) {
 			$object->setNamHoc($namHocHienTai->getId());
 		}
@@ -88,10 +92,10 @@ class ThanhVienListener {
 	}
 	
 	public function postRemoveHandler(ThanhVien $object, LifecycleEventArgs $event) {
-	
+		
 	}
 	
 	public function postPersistHandler(ThanhVien $employer, LifecycleEventArgs $event) {
-	
+		
 	}
 }
