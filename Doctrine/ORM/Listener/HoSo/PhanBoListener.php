@@ -1,14 +1,7 @@
 <?php
 namespace App\Doctrine\ORM\Listener\HoSo;
 
-use AppBundle\Entity\BinhLe\ThieuNhi\PhanBo;
-use AppBundle\Entity\BinhLe\ThieuNhi\ThanhVien;
-use AppBundle\Entity\Content\ContentPiece\ContentPiece;
-use AppBundle\Entity\Content\ContentPiece\ContentPieceVocabEntry;
-use AppBundle\Entity\Content\NodeShortcode\H5pShortcodeHandler;
-use AppBundle\Entity\Content\NodeShortcode\ShortcodeFactory;
-use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\HoSo\PhanBo;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

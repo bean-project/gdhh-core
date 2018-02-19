@@ -2,18 +2,9 @@
 
 namespace App\Doctrine\ORM\Listener\HoSo;
 
-use AppBundle\Entity\BinhLe\ThieuNhi\NamHoc;
-use AppBundle\Entity\BinhLe\ThieuNhi\PhanBo;
-use AppBundle\Entity\BinhLe\ThieuNhi\ThanhVien;
-use AppBundle\Entity\Content\ContentPiece\ContentPiece;
-use AppBundle\Entity\Content\ContentPiece\ContentPieceVocabEntry;
-use AppBundle\Entity\Content\NodeShortcode\H5pShortcodeHandler;
-use AppBundle\Entity\Content\NodeShortcode\ShortcodeFactory;
-use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\HoSo\NamHoc;
+use App\Entity\HoSo\ThanhVien;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\Tests\ODM\PHPCR\Mapping\Model\LifecycleCallbackMappingObject;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ThanhVienListener {
