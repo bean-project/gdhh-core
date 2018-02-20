@@ -361,54 +361,53 @@ class ThanhVien {
 			return $phanBo;
 		}
 		
-		if($this->isHuynhTruong() || true) {
-			if(empty($phanBo = $this->timPhanBoNamHoc($namHoc))) {
-				$phanBoMoi = new PhanBo();
-				$phanBoMoi->setThanhVien($this);
-				$phanBoMoi->setPhanDoan($this->phanDoan);
-				
+		if(empty($phanBo = $this->timPhanBoNamHoc($namHoc))) {
+			$phanBoMoi = new PhanBo();
+			$phanBoMoi->setThanhVien($this);
+			$phanBoMoi->setPhanDoan($this->phanDoan);
+			if( ! $this->isHuynhTruong()) {
 				$phanBoMoi->createBangDiem();
-				
-				$this->phanBoHangNam->add($phanBoMoi);
-				
-				$newCDNumber = $this->chiDoan;
-				
-				if( ! empty($newCDNumber)) {
-					$chiDoanMoi = $namHoc->getChiDoanWithNumber($newCDNumber);
-					$phanBoMoi->setChiDoan($chiDoanMoi);
-					$chiDoanMoi->getPhanBoHangNam()->add($phanBoMoi);
-				}
-				$phanBoMoi->setVaiTro();
-				$phanBoMoi->setNamHoc($namHoc);
-				$namHoc->getPhanBoHangNam()->add($phanBoMoi);
-				
-				return $phanBoMoi;
-			} else {
-				$phanBo->setVaiTro();
-				$phanBo->setPhanDoan($this->phanDoan);
-				
-				$newCDNumber = $this->chiDoan;
-				$chiDoanCu   = $phanBo->getChiDoan();
-				
-				if(empty($newCDNumber)) {
-					if( ! empty($chiDoanCu)) {
-						// Learning Point: switch these 2 lines and you will see loll
-						$chiDoanCu->getPhanBoHangNam()->removeElement($phanBo);
-						$phanBo->setChiDoan(null);
-					}
-				} elseif( ! empty($newCDNumber) && (empty($chiDoanCu) || ! empty($chiDoanCu) && $newCDNumber !== $chiDoanCu->getNumber())) {
-					$chiDoanMoi = $namHoc->getChiDoanWithNumber($newCDNumber);
-					if( ! empty($chiDoanCu)) {
-						$chiDoanCu->getPhanBoHangNam()->removeElement($phanBo);
-					}
-					
-					$phanBo->setChiDoan($chiDoanMoi);
-					$chiDoanMoi->getPhanBoHangNam()->add($phanBo);
-				}
-				
-				return $phanBo;
 			}
+			$this->phanBoHangNam->add($phanBoMoi);
+			
+			$newCDNumber = $this->chiDoan;
+			
+			if( ! empty($newCDNumber)) {
+				$chiDoanMoi = $namHoc->getChiDoanWithNumber($newCDNumber);
+				$phanBoMoi->setChiDoan($chiDoanMoi);
+				$chiDoanMoi->getPhanBoHangNam()->add($phanBoMoi);
+			}
+			$phanBoMoi->setVaiTro();
+			$phanBoMoi->setNamHoc($namHoc);
+			$namHoc->getPhanBoHangNam()->add($phanBoMoi);
+			
+			return $phanBoMoi;
+		} else {
+			$phanBo->setVaiTro();
+			$phanBo->setPhanDoan($this->phanDoan);
+			
+			$newCDNumber = $this->chiDoan;
+			$chiDoanCu   = $phanBo->getChiDoan();
+			
+			if(empty($newCDNumber)) {
+				if( ! empty($chiDoanCu)) {
+					// Learning Point: switch these 2 lines and you will see loll
+					$chiDoanCu->getPhanBoHangNam()->removeElement($phanBo);
+					$phanBo->setChiDoan(null);
+				}
+			} elseif( ! empty($newCDNumber) && (empty($chiDoanCu) || ! empty($chiDoanCu) && $newCDNumber !== $chiDoanCu->getNumber())) {
+				$chiDoanMoi = $namHoc->getChiDoanWithNumber($newCDNumber);
+				if( ! empty($chiDoanCu)) {
+					$chiDoanCu->getPhanBoHangNam()->removeElement($phanBo);
+				}
+				
+				$phanBo->setChiDoan($chiDoanMoi);
+				$chiDoanMoi->getPhanBoHangNam()->add($phanBo);
+			}
+			
+			return $phanBo;
 		}
+		
 		
 		return $phanBo;
 	}

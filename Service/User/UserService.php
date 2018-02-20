@@ -12,7 +12,49 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class UserService extends BaseService
 {
+	public function addUserIfNotExist(User $user, $password = null, $criteria = [], $roles = []) {
+		$flushable = false;
+		$container = $this->container;
+		$registry  = $container->get('doctrine');
+		$userRepo  = $registry->getRepository(User::class);
+		/** @var User $userFound */
+		if( ! empty($userFound = $userRepo->findOneBy($criteria))) {
+//			if( ! empty($userFound->getThanhVien())) {
+//				throw new Exception();
+//			}
+			$user = $userFound;
+//			$object->setUser($user);
+		} else {
+//		$user = $container->get('sonata.user.user_manager')->createUser();
+//			$user = $object->getUser();
+			$user->addRole(User::ROLE_HUYNH_TRUONG);
+			$flushable = true;
+		}
 
+//		$username = $object->getUser()->getUsername();
+		
+		if( ! empty($password)) {
+			$user->setPlainPassword($password);
+			$flushable = true;
+		}
+		
+		if(count($roles) > 0) {
+			$user->setEnabled(true);
+			$realRoles = $user->getRoles();
+			$user->setRoles(array_merge($roles, $realRoles));
+			$flushable = true;
+		}
+		
+		if($flushable) {
+			
+			$manager = $container->get('doctrine.orm.default_entity_manager');
+			$manager->persist($user);
+			$manager->flush();
+		}
+		
+		return $user;
+	}
+	
     public function logUserOut()
     {
         $this->container->get('security.token_storage')->setToken(null);

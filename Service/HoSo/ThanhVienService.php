@@ -4,11 +4,24 @@ namespace App\Service\HoSo;
 
 
 use App\Entity\HoSo\PhanBo;
+use App\Entity\HoSo\ThanhVien;
 use App\Entity\HoSo\TruongPhuTrachDoi;
 use App\Service\Data\SpreadsheetWriter;
 use App\Service\BaseService;
 
 class ThanhVienService extends BaseService {
+	public function preUpdate(ThanhVien $object){
+		if( ! empty($phanBoNamNay = $object->getPhanBoNamNay())) {
+			$phanBoNamNay->setVaiTro();
+			if(empty($object->getChiDoan())) {
+				$phanBoNamNay->setChiDoan(null);
+			}
+			
+			$namHocHienTai = $this->container->get(NamHocService::class)->getNamHocHienTai();
+			$object->initiatePhanBo($namHocHienTai);
+		};
+	}
+	
 	public function writeBangDiemDoiNhomGiaoLyHeading(SpreadsheetWriter $sWriter, $hocKy, PhanBo $phanBo) {
 		$cacTruongPT = $phanBo->getCacTruongPhuTrachDoi();
 		

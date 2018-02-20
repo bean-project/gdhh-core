@@ -31,6 +31,18 @@ class DoiNhomGiaoLy {
 	/** @var integer */
 	private $soThieuNhiNgheo = null;
 	
+	public function getTenCacTruongPhuTrach() {
+		$cacTruong = $this->cacTruongPhuTrachDoi;
+		$str       = '';
+		/** @var TruongPhuTrachDoi $truong */
+		foreach($cacTruong as $truong) {
+			$tv  = $truong->getPhanBo()->getThanhVien();
+			$str .= $tv->getTitle() . ' ' . $tv->getFirstname();
+		}
+		
+		return $str;
+	}
+	
 	public function getSoThieuNhiNgheo() {
 		if($this->soThieuNhiNgheo === null) {
 			$this->soThieuNhiNgheo = 0;
@@ -114,7 +126,7 @@ class DoiNhomGiaoLy {
 	}
 	
 	function __construct() {
-		$this->phanBoThieuNhi        = new ArrayCollection();
+		$this->phanBoThieuNhi       = new ArrayCollection();
 		$this->cacTruongPhuTrachDoi = new ArrayCollection();
 	}
 	
