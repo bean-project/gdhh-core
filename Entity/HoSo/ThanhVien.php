@@ -3,6 +3,7 @@
 namespace App\Entity\HoSo;
 
 use App\Entity\Content\Base\AppContentEntity;
+use App\Entity\HoSo\ThanhVien\HuynhTruong;
 use App\Entity\NLP\Sense;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -207,6 +208,25 @@ class ThanhVien {
 	public function isBQT() {
 		return $this->xuDoanPhoNgoai || $this->xuDoanPhoNoi || $this->xuDoanTruong || $this->thuKyXuDoan;
 	}
+	
+	/** @var HuynhTruong */
+	protected $huynhTruongObj;
+	
+	/**
+	 * @return HuynhTruong
+	 */
+	public function getHuynhTruongObj() {
+		if(empty($this->huynhTruong)) {
+			return null;
+		}
+		if(empty($this->huynhTruongObj)) {
+			$this->huynhTruongObj = new HuynhTruong();
+			$this->huynhTruongObj->setThanhVien($this);
+		}
+		
+		return $this->huynhTruongObj;
+	}
+	
 	
 	/**
 	 * @var int
