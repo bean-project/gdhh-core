@@ -4,6 +4,12 @@
     "description": "Symfony Based Core file for GDHH App",
     "keywords": ["bundle", "bean"],
     "license": "MIT",
+    "repositories":[
+      {
+        "type": "vcs",
+        "url": "https://github.com/bean-project/ExcelBundle"
+      }
+    ],
     "authors": [
       {
         "name": "Peter Pierre",
