@@ -270,7 +270,7 @@ class PhanBo {
 	
 	/**
 	 * @var ArrayCollection
-	 * @ORM\OneToMany(targetEntity="App\Entity\HoSo\TruongPhuTrachDoi", mappedBy="phanBoHangNam", cascade={"persist","merge"}, orphanRemoval=true)
+	 * @ORM\OneToMany(targetEntity="App\Entity\HoSo\TruongPhuTrachDoi", mappedBy="phanBo", cascade={"persist","merge"}, orphanRemoval=true)
 	 */
 	protected $cacTruongPhuTrachDoi;
 	

@@ -34,7 +34,7 @@ class TruongPhuTrachDoi {
 	}
 	
 	public function generateId() {
-		$this->id = User::generate4DigitCode() . '-' . $this->phanBoHangNam->getThanhVien()->getCode() . '-' . $this->doiNhomGiaoLy->getId();
+		$this->id = User::generate4DigitCode() . '-' . $this->phanBo->getThanhVien()->getCode() . '-' . $this->doiNhomGiaoLy->getId();
 	}
 	
 	/**

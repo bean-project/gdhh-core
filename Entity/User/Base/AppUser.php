@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity\User\Base;
 
 use App\Entity\HoSo\ThanhVien;
@@ -53,20 +52,6 @@ class AppUser extends AbstractUser {
 	protected $nationality;
 	
 	/**
-	 * @return mixed
-	 */
-	public function getIndividualEntity() {
-		return $this->individualEntity;
-	}
-	
-	/**
-	 * @param mixed $individualEntity
-	 */
-	public function setIndividualEntity($individualEntity) {
-		$this->individualEntity = $individualEntity;
-	}
-	
-	/**
 	 * @return ThanhVien
 	 */
 	public function getThanhVien() {
@@ -80,18 +65,5 @@ class AppUser extends AbstractUser {
 		$this->thanhVien = $thanhVien;
 	}
 	
-	/**
-	 * @return string
-	 */
-	public function getMiddlename() {
-		return $this->middlename;
-	}
-	
-	/**
-	 * @param string $middlename
-	 */
-	public function setMiddlename($middlename) {
-		$this->middlename = $middlename;
-	}
 	
 }

@@ -246,12 +246,78 @@ class ThanhVien {
 		$this->phanBoHangNam = new ArrayCollection();
 	}
 	
+	public function isGranted($name, $action = null, ThanhVien $object = null) {
+		$name      = strtoupper($name);
+		$thanhVien = $this;
+		if( ! empty($action)) {
+			$action = strtolower($action);
+		}
+		if(in_array($action, [ 'truong-chi-doan', 'list-thieu-nhi-nhom' ]) || $name === 'EDIT') {
+			if($action === 'truong-chi-doan') {
+				if( ! empty($thanhVien->getPhanBoNamNay()->isChiDoanTruong())) {
+					if($name === 'EDIT') {
+						if(empty($object)) {
+							return false;
+						}
+						
+						return ($object->getPhanBoNamNay()->getChiDoan() === $thanhVien->getPhanBoNamNay()->getChiDoan());
+					}
+					
+					return true;
+				}
+				
+				return false;
+			} elseif($action === 'list-thieu-nhi-nhom') {
+				if($name === 'EXPORT') {
+					return true;
+				}
+				
+				if($name === 'EDIT') {
+					if(empty($object)) {
+						return false;
+					}
+					
+					$doiNhomGiaoLy = $object->getPhanBoNamNay()->getDoiNhomGiaoLy();
+					
+					if(empty($doiNhomGiaoLy)) {
+						return false;
+					}
+					
+					$cacTruongPT = $doiNhomGiaoLy->getCacTruongPhuTrachDoi();
+					/** @var TruongPhuTrachDoi $item */
+					foreach($cacTruongPT as $item) {
+						if($item->getPhanBoHangNam()->getThanhVien()->getId() === $thanhVien->getId()) {
+							return true;
+						}
+					}
+					
+					return false;
+				}
+				
+			}
+		}
+		
+	}
+	
 	
 	/**
 	 * @return bool
 	 */
-	public function isPhanDoanTruongOrSoeur() {
-		return $this->phanDoanTruong || $this->soeur;
+	public function isPhanDoanTruongOrSoeur(ThanhVien $tv = null) {
+		$isPDTorSoeur = $this->phanDoanTruong || $this->soeur;
+		if(empty($tv)) {
+			return $isPDTorSoeur;
+		}
+		
+		if($isPDTorSoeur) {
+			if( ! empty($tv)) {
+				if($this->getPhanDoan() === $tv->getPhanDoan()) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
 	}
 	
 	public function isTruongPTorGreater(ThanhVien $thanhVien) {
