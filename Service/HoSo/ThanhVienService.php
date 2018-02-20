@@ -16,10 +16,10 @@ class ThanhVienService extends BaseService {
 			if(empty($object->getChiDoan())) {
 				$phanBoNamNay->setChiDoan(null);
 			}
-			
-			$namHocHienTai = $this->container->get(NamHocService::class)->getNamHocHienTai();
-			$object->initiatePhanBo($namHocHienTai);
 		};
+		
+		$namHocHienTai = $this->container->get(NamHocService::class)->getNamHocHienTai();
+		$object->initiatePhanBo($namHocHienTai);		
 	}
 	
 	public function writeBangDiemDoiNhomGiaoLyHeading(SpreadsheetWriter $sWriter, $hocKy, PhanBo $phanBo) {

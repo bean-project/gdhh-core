@@ -9,6 +9,7 @@ class NamHocService extends BaseService {
 	
 	public function getNamHocHienTai() {
 		$repo   = $this->getDoctrine()->getRepository(NamHoc::class);
+		/** @var NamHoc $namHoc */
 		$namHoc = $repo->findOneBy(
 			array( 'enabled' => true, 'started' => true )
 		);
