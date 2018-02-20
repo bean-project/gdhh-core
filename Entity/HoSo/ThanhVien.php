@@ -227,7 +227,6 @@ class ThanhVien {
 		return $this->huynhTruongObj;
 	}
 	
-	
 	/**
 	 * @var int
 	 * @ORM\Id
