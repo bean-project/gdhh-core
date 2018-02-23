@@ -33,6 +33,19 @@ class PhanBo {
 		return $this->phanDoanTruong || $this->soeur;
 	}
 	
+	/**
+	 * @return array
+	 */
+	public function getCacDoiNhomGiaoLyPhuTrach() {
+		$cacDoiNhomGiaoLy = [];
+		
+		/** @var TruongPhuTrachDoi $truongPT */
+		foreach($this->cacTruongPhuTrachDoi as $truongPT) {
+			$cacDoiNhomGiaoLy [] = $truongPT->getDoiNhomGiaoLy();
+		}
+		
+		return $cacDoiNhomGiaoLy;
+	}
 	public function setVaiTro() {
 		$tv                = $this->thanhVien;
 		$this->huynhTruong = $tv->isHuynhTruong();
