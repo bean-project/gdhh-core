@@ -205,6 +205,26 @@ class ThanhVien {
 		20 => self::HUYNH_TRUONG,
 	];
 	
+	public static function getDanhSachChiDoanTheoPhanDoan($phanDoan = null) {
+		$cd = [];
+		if( ! empty($phanDoan)) {
+			foreach(self::$danhSachChiDoan as $number => $pd) {
+				if($phanDoan === $pd) {
+					$cd [] = $number;
+				}
+			}
+		} else {
+			foreach(self::$danhSachChiDoan as $number => $pd) {
+				if( ! is_array($cd [ $pd ])) {
+					$cd [ $pd ] = [];
+				}
+				$cd [ $pd ][] = $number;
+			}
+		}
+		
+		return $cd;
+	}
+	
 	public function isBQT() {
 		return $this->xuDoanPhoNgoai || $this->xuDoanPhoNoi || $this->xuDoanTruong || $this->thuKyXuDoan;
 	}
@@ -1150,48 +1170,6 @@ class ThanhVien {
 	 */
 	public function setDob($dob) {
 		$this->dob = $dob;
-	}
-	
-	/**
-	 * @return array
-	 */
-	public static function getChristianNames() {
-		return self::$christianNames;
-	}
-	
-	/**
-	 * @param array $christianNames
-	 */
-	public static function setChristianNames($christianNames) {
-		self::$christianNames = $christianNames;
-	}
-	
-	/**
-	 * @return array
-	 */
-	public static function getDanhSachPhanDoan() {
-		return self::$danhSachPhanDoan;
-	}
-	
-	/**
-	 * @param array $danhSachPhanDoan
-	 */
-	public static function setDanhSachPhanDoan($danhSachPhanDoan) {
-		self::$danhSachPhanDoan = $danhSachPhanDoan;
-	}
-	
-	/**
-	 * @return array
-	 */
-	public static function getDanhSachChiDoan() {
-		return self::$danhSachChiDoan;
-	}
-	
-	/**
-	 * @param array $danhSachChiDoan
-	 */
-	public static function setDanhSachChiDoan($danhSachChiDoan) {
-		self::$danhSachChiDoan = $danhSachChiDoan;
 	}
 	
 	/**
