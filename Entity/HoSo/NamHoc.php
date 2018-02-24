@@ -13,6 +13,30 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="hoso__nam_hoc")
  */
 class NamHoc {
+	
+	/** @var NamHoc */
+	private static $namHienTai;
+	
+	public function getNamHocHienTai() {
+		if(empty(self::$namHienTai)) {
+			if($this->started && $this->enabled) {
+				self::$namHienTai = $this;
+			}
+			
+			if(empty($this->namSau)) {
+				return null;
+			} else {
+				if($this->namSau->started && $this->namSau->enabled) {
+					self::$namHienTai = $this->namSau;
+				} else {
+					$this->namSau->getNamHocHienTai();
+				}
+			}
+		}
+		
+		return self::$namHienTai;
+	}
+	
 	/**
 	 * ID_REF
 	 * @ORM\Id

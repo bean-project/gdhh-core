@@ -162,17 +162,19 @@ class ChiDoan {
 		$truongPT7 = $this->chiaTruongPhuTrach($dngl7, $phanBo);
 		$truongPT8 = $this->chiaTruongPhuTrach($dngl8, $phanBo);
 		
-		return ! empty($truongPT1) || ! empty($truongPT2) || ! empty($truongPT3)|| ! empty($truongPT4)|| ! empty($truongPT5)|| ! empty($truongPT6)|| ! empty($truongPT7)|| ! empty($truongPT8);
+		return ! empty($truongPT1) || ! empty($truongPT2) || ! empty($truongPT3) || ! empty($truongPT4) || ! empty($truongPT5) || ! empty($truongPT6) || ! empty($truongPT7) || ! empty($truongPT8);
 	}
 	
-	public function hoanTatBangDiemHK1() {
+	public function hoanTatBangDiemHK1($forced = false) {
 		/** @var PhanBo $phanBo */
 		foreach($this->phanBoHangNam as $phanBo) {
 			if($phanBo->isHuynhTruong() && $phanBo->getThanhVien()->isEnabled()) {
 				$cacTruong = $phanBo->getCacTruongPhuTrachDoi();
 				/** @var TruongPhuTrachDoi $truongPT */
 				foreach($cacTruong as $truongPT) {
-					if( ! $truongPT->getDoiNhomGiaoLy()->isHoanTatBangDiemHK1()) {
+					if($forced) {
+						$truongPT->getDoiNhomGiaoLy()->setHoanTatBangDiemHK1(true);
+					} elseif( ! $truongPT->getDoiNhomGiaoLy()->isHoanTatBangDiemHK1()) {
 						return false;
 					}
 				}
@@ -183,14 +185,16 @@ class ChiDoan {
 		return true;
 	}
 	
-	public function hoanTatBangDiemHK2() {
+	public function hoanTatBangDiemHK2($forced = false) {
 		/** @var PhanBo $phanBo */
 		foreach($this->phanBoHangNam as $phanBo) {
 			if($phanBo->isHuynhTruong() && $phanBo->getThanhVien()->isEnabled()) {
 				$cacTruong = $phanBo->getCacTruongPhuTrachDoi();
 				/** @var TruongPhuTrachDoi $truongPT */
 				foreach($cacTruong as $truongPT) {
-					if( ! $truongPT->getDoiNhomGiaoLy()->isHoanTatBangDiemHK2()) {
+					if($forced) {
+						$truongPT->getDoiNhomGiaoLy()->setHoanTatBangDiemHK2(true);
+					} elseif( ! $truongPT->getDoiNhomGiaoLy()->isHoanTatBangDiemHK2()) {
 						return false;
 					}
 				}
@@ -199,6 +203,15 @@ class ChiDoan {
 		$this->hoanTatBangDiemHK2 = true;
 		
 		return true;
+	}
+	
+	public function getHocKyHienTai() {
+		$hocKy = 1;
+		if($this->duocDuyetBangDiemHK1) {
+			$hocKy = 2;
+		}
+		
+		return $hocKy;
 	}
 	
 	/**
@@ -210,7 +223,7 @@ class ChiDoan {
 	public function chiaTruongPhuTrach(DoiNhomGiaoLy $dngl = null, PhanBo $phanBo) {
 		if( ! empty($dngl)) {
 			$truongPhuTrach = new TruongPhuTrachDoi();
-			$truongPhuTrach->setPhanBoHangNam($phanBo);
+			$truongPhuTrach->setPhanBo($phanBo);
 			$truongPhuTrach->setDoiNhomGiaoLy($dngl);
 			$truongPhuTrach->generateId();
 			

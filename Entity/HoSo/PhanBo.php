@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity\HoSo;
 
 use App\Entity\HocBa\BangDiem;
@@ -46,6 +47,7 @@ class PhanBo {
 		
 		return $cacDoiNhomGiaoLy;
 	}
+	
 	public function setVaiTro() {
 		$tv                = $this->thanhVien;
 		$this->huynhTruong = $tv->isHuynhTruong();
@@ -63,12 +65,20 @@ class PhanBo {
 		$this->xuDoanPhoNoi   = $tv->isXuDoanPhoNoi();
 		$this->xuDoanPhoNgoai = $tv->isXuDoanPhoNgoai();
 		$this->thuKyXuDoan    = $tv->isThuKyXuDoan();
+		$this->thuKyChiDoan   = $tv->isThuKyChiDoan();
 		$this->thuQuyXuDoan   = $tv->isThuQuyXuDoan();
 		
-		$this->soeur       = $tv->isSoeur();
+		$this->soeur = $tv->isSoeur();
 	}
 	
+	/** @var ArrayCollection */
+	private $cacPhanBoThieuNhiDoMinhPhuTrach;
+	
 	public function getCacPhanBoThieuNhiPhuTrach() {
+		if( ! empty($this->cacPhanBoThieuNhiDoMinhPhuTrach) && $this->cacPhanBoThieuNhiDoMinhPhuTrach->count() > 0) {
+			return $this->cacPhanBoThieuNhiDoMinhPhuTrach;
+		}
+		
 		$cacTruongPT   = $this->cacTruongPhuTrachDoi;
 		$phanBoHangNam = new ArrayCollection();
 		/** @var TruongPhuTrachDoi $truongPT */
@@ -76,6 +86,14 @@ class PhanBo {
 			$phanBoHangNam = new ArrayCollection(array_merge($phanBoHangNam->toArray(), $truongPT->getDoiNhomGiaoLy()->getPhanBoThieuNhi()->toArray()));
 		}
 		
+		
+		
+		$this->cacPhanBoThieuNhiDoMinhPhuTrach = self::sortCacPhanBo($phanBoHangNam);
+		
+		return $this->cacPhanBoThieuNhiDoMinhPhuTrach;
+	}
+	
+	public static function sortCacPhanBo(ArrayCollection $phanBoHangNam) {
 		if($phanBoHangNam->count() > 0) {
 			$array       = $phanBoHangNam->toArray();
 			$phanBoArray = [];
@@ -96,9 +114,9 @@ class PhanBo {
 				$returnArray[] = $phanBoArray[ $id ];
 			}
 			$phanBoHangNam = new ArrayCollection(($returnArray));
+			
+			return $phanBoHangNam;
 		}
-		
-		return $phanBoHangNam;
 	}
 	
 	/**
@@ -224,7 +242,7 @@ class PhanBo {
 	public function clearCacTruongPhuTrachDoi() {
 		/** @var TruongPhuTrachDoi $truongDoi */
 		foreach($this->cacTruongPhuTrachDoi as $truongDoi) {
-			$truongDoi->setPhanBoHangNam(null);
+			$truongDoi->setPhanBo(null);
 		}
 		$this->cacTruongPhuTrachDoi->clear();
 	}
@@ -369,6 +387,14 @@ class PhanBo {
 	 * @ORM\Column(type="boolean", options={"default":false})
 	 */
 	protected $chiDoanTruong = false;
+	
+	
+	/**
+	 * @var boolean
+	 * @ORM\Column(type="boolean", options={"default":false})
+	 */
+	protected $thuKyChiDoan = false;
+	
 	
 	/**
 	 * @var boolean
@@ -823,6 +849,20 @@ class PhanBo {
 	 */
 	public function setSoeur($soeur) {
 		$this->soeur = $soeur;
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isThuKyChiDoan() {
+		return $this->thuKyChiDoan;
+	}
+	
+	/**
+	 * @param bool $thuKyChiDoan
+	 */
+	public function setThuKyChiDoan($thuKyChiDoan) {
+		$this->thuKyChiDoan = $thuKyChiDoan;
 	}
 	
 	

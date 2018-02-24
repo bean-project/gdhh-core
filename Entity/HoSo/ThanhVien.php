@@ -4,6 +4,7 @@ namespace App\Entity\HoSo;
 
 use App\Entity\Content\Base\AppContentEntity;
 use App\Entity\HoSo\ThanhVien\HuynhTruong;
+use App\Entity\HoSo\ThanhVien\ThuKyChiDoan;
 use App\Entity\NLP\Sense;
 use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -229,6 +230,44 @@ class ThanhVien {
 		return $this->xuDoanPhoNgoai || $this->xuDoanPhoNoi || $this->xuDoanTruong || $this->thuKyXuDoan;
 	}
 	
+	function __invoke() {
+	
+	}
+	
+	/** @var ThuKyChiDoan */
+	protected $thuKyChiDoanObj;
+	private static $booleanObjects = [
+		'thuKyChiDoan' => ThuKyChiDoan::class,
+		'huynhTruong'  => HuynhTruong::class
+	];
+	
+	private function getBooleanObj($prop) {
+		if(in_array($prop, array_keys(self::$booleanObjects))) {
+			if(empty($this->$prop)) {
+				return null;
+			}
+			$propObj = $prop . 'Obj';
+			if(empty($this->$propObj)) {
+				$propClass      = self::$booleanObjects[ $prop ];
+				$this->$propObj = new $propClass;
+				$this->$propObj->setThanhVien($this);
+				$this->$propObj->setPhanBo($this->getPhanBoNamNay());
+			}
+			
+			return $this->$propObj;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @return ThuKyChiDoan
+	 */
+	public function getThuKyChiDoanObj() {
+		return $this->getBooleanObj('thuKyChiDoan');
+	}
+	
+	
 	/** @var HuynhTruong */
 	protected $huynhTruongObj;
 	
@@ -236,15 +275,16 @@ class ThanhVien {
 	 * @return HuynhTruong
 	 */
 	public function getHuynhTruongObj() {
-		if(empty($this->huynhTruong)) {
-			return null;
-		}
-		if(empty($this->huynhTruongObj)) {
-			$this->huynhTruongObj = new HuynhTruong();
-			$this->huynhTruongObj->setThanhVien($this);
-		}
-		
-		return $this->huynhTruongObj;
+		return $this->getBooleanObj('huynhTruong');
+//		if(empty($this->huynhTruong)) {
+//			return null;
+//		}
+//		if(empty($this->huynhTruongObj)) {
+//			$this->huynhTruongObj = new HuynhTruong();
+//			$this->huynhTruongObj->setThanhVien($this);
+//		}
+//
+//		return $this->huynhTruongObj;
 	}
 	
 	/**
@@ -406,7 +446,7 @@ class ThanhVien {
 	
 	public function sanhHoatLai(NamHoc $namHoc) {
 		if($this->enabled) {
-			return false;
+			return true;
 		}
 		$this->enabled = true;
 		$this->setNamHoc($namHoc->getId());
@@ -435,7 +475,9 @@ class ThanhVien {
 		/** @var PhanBo $phanBo */
 		foreach($this->phanBoHangNam as $phanBo) {
 			if( ! empty($namHoc = $phanBo->getNamHoc())) {
-				if($namHoc->isEnabled()) {
+				if($namHoc->isStarted() && $namHoc->isEnabled()) {
+					$namHoc->getNamHocHienTai();
+					
 					return $phanBo;
 				}
 			}
@@ -705,6 +747,14 @@ class ThanhVien {
 	 * @ORM\Column(type="boolean", options={"default":false})
 	 */
 	protected $chiDoanTruong = false;
+	
+	
+	/**
+	 * @var boolean
+	 * @ORM\Column(type="boolean", options={"default":false})
+	 */
+	protected $thuKyChiDoan = false;
+	
 	
 	/**
 	 * @var boolean
@@ -1520,6 +1570,20 @@ class ThanhVien {
 	 */
 	public function setSoeur($soeur) {
 		$this->soeur = $soeur;
+	}
+	
+	/**
+	 * @return bool
+	 */
+	public function isThuKyChiDoan() {
+		return $this->thuKyChiDoan;
+	}
+	
+	/**
+	 * @param bool $thuKyChiDoan
+	 */
+	public function setThuKyChiDoan($thuKyChiDoan) {
+		$this->thuKyChiDoan = $thuKyChiDoan;
 	}
 	
 }
