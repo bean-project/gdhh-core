@@ -69,10 +69,58 @@ class BangDiem {
 		return $tbCC;
 	}
 	
+	public function tinhDiemGiaoLy($hocKy = 1) {
+		$cacCotDiemBiLoaiBo = $this->phanBo->getChiDoan()->getCotDiemBiLoaiBo();
+		$cols               = null;
+		$tbGL               = 0;
+		if($hocKy === 1) {
+			$cols = [
+				'quizTerm1' => 'quizTerm1',
+				'midTerm1'  => 'midTerm1',
+				
+				'finalTerm1-1' => 'finalTerm1',
+				'finalTerm1-2' => 'finalTerm1'
+			];
+		} elseif($hocKy === 2) {
+			$cols = [
+				'quizTerm2'    => 'quizTerm2',
+				'midTerm2'     => 'midTerm2',
+				'finalTerm2-1' => 'finalTerm2',
+				'finalTerm2-2' => 'finalTerm2'
+			];
+		} else {
+			return null;
+		}
+		
+		if(is_array($cacCotDiemBiLoaiBo)) {
+			foreach($cacCotDiemBiLoaiBo as $cotDiemBiLoaiBo) {
+				unset($cols[ $cotDiemBiLoaiBo ]);
+			}
+		}
+		
+		$colCount = count($cols);
+		$sumGL    = 0;
+		foreach($cols as $col) {
+			if(empty($_gl = $this->$col)) {
+				continue;
+			}
+			$sumGL += $_gl;
+		}
+		
+		if($hocKy === 1) {
+			$tbGL = $this->tbGLTerm1 = $sumGL / $colCount;
+		} elseif($hocKy === 2) {
+			$tbGL = $this->tbGLTerm2 = $sumGL / $colCount;
+		}
+		
+		
+		return $tbGL;
+	}
+	
 	public function tinhDiemHocKy($hocKy = 1) {
 		$cacCotDiemBiLoaiBo = $this->phanBo->getChiDoan()->getCotDiemBiLoaiBo();
 		$cols               = null;
-		$tbCC               = 0;
+		
 		if($hocKy === 1) {
 			$cols = [
 				'tbCCTerm1' => 'tbCCTerm1',
@@ -87,6 +135,7 @@ class BangDiem {
 				'tbCCTerm2'    => 'tbCCTerm2',
 				'quizTerm2'    => 'quizTerm2',
 				'midTerm2'     => 'midTerm2',
+				
 				'finalTerm2-1' => 'finalTerm2',
 				'finalTerm2-2' => 'finalTerm2'
 			];
@@ -120,7 +169,15 @@ class BangDiem {
 		
 		if($hocKy === 1) {
 			$tbTerm = $this->tbTerm1 = $sumDiem / $colCount;
+			$this->tinhDiemGiaoLy(1);
 		} elseif($hocKy === 2) {
+			if($this->tbGLTerm1 === null) {
+				$this->tinhDiemGiaoLy(1);
+			}
+			
+			$this->tinhDiemGiaoLy(2);
+			$this->tbGLYear = ($this->tbGLTerm1 + $this->tbGLTerm2) / 2;
+			
 			$tbTerm       = $this->tbTerm2 = $sumDiem / $colCount;
 			$this->tbYear = ($this->tbTerm1 + $this->tbTerm2) / 2;
 			$this->congPhieuChuaNhat();
@@ -231,6 +288,7 @@ class BangDiem {
 	 * @ORM\Column(type="float", nullable=true)
 	 */
 	protected $tbCCTerm1;
+	
 	/**
 	 * @var  float
 	 * @ORM\Column(type="float", nullable=true)
@@ -248,6 +306,13 @@ class BangDiem {
 	 * @ORM\Column(type="float", nullable=true)
 	 */
 	protected $finalTerm1;
+	
+	/**
+	 * @var  float
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	protected $tbGLTerm1;
+	
 	
 	/**
 	 * @var  float
@@ -284,6 +349,18 @@ class BangDiem {
 	 * @ORM\Column(type="float", nullable=true)
 	 */
 	protected $tbTerm2;
+	
+	/**
+	 * @var  float
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	protected $tbGLTerm2;
+	
+	/**
+	 * @var  float
+	 * @ORM\Column(type="float", nullable=true)
+	 */
+	protected $tbGLYear;
 	
 	/**
 	 * @var  float
@@ -806,4 +883,48 @@ class BangDiem {
 	public function setSpecialTreatmentApproved($specialTreatmentApproved) {
 		$this->specialTreatmentApproved = $specialTreatmentApproved;
 	}
+	
+	/**
+	 * @return float
+	 */
+	public function getTbGLTerm1() {
+		return $this->tbGLTerm1;
+	}
+	
+	/**
+	 * @param float $tbGLTerm1
+	 */
+	public function setTbGLTerm1($tbGLTerm1) {
+		$this->tbGLTerm1 = $tbGLTerm1;
+	}
+	
+	/**
+	 * @return float
+	 */
+	public function getTbGLTerm2() {
+		return $this->tbGLTerm2;
+	}
+	
+	/**
+	 * @param float $tbGLTerm2
+	 */
+	public function setTbGLTerm2($tbGLTerm2) {
+		$this->tbGLTerm2 = $tbGLTerm2;
+	}
+	
+	/**
+	 * @return float
+	 */
+	public function getTbGLYear() {
+		return $this->tbGLYear;
+	}
+	
+	/**
+	 * @param float $tbGLYear
+	 */
+	public function setTbGLYear($tbGLYear) {
+		$this->tbGLYear = $tbGLYear;
+	}
+	
+	
 }
