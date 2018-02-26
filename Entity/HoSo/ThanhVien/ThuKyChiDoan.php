@@ -8,12 +8,7 @@ use App\Entity\HoSo\PhanBo;
 use App\Entity\HoSo\ThanhVien;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ThuKyChiDoan {
-	/** @var PhanBo */
-	private $phanBo;
-	
-	/** @var ThanhVien */
-	private $thanhVien;
+class ThuKyChiDoan extends HuynhTruong {
 	
 	private $cacPhanBoThieuNhiPhuTrachTheoNamHoc = [];
 	
@@ -71,33 +66,5 @@ class ThuKyChiDoan {
 		}
 		
 		return true;
-	}
-	
-	/**
-	 * @return ThanhVien
-	 */
-	public function getThanhVien() {
-		return $this->thanhVien;
-	}
-	
-	/**
-	 * @param ThanhVien $thanhVien
-	 */
-	public function setThanhVien($thanhVien) {
-		$this->thanhVien = $thanhVien;
-	}
-	
-	/**
-	 * @return PhanBo
-	 */
-	public function getPhanBo() {
-		return $this->phanBo;
-	}
-	
-	/**
-	 * @param PhanBo $phanBo
-	 */
-	public function setPhanBo($phanBo) {
-		$this->phanBo = $phanBo;
 	}
 }

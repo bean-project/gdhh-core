@@ -2,6 +2,7 @@
 
 namespace App\Entity\HocBa;
 
+use App\Entity\HoSo\PhanBo;
 use App\Entity\User\User;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,11 +11,28 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="hocba__bang_diem")
  */
 class BangDiem {
-	
 	const YEU = 'YEU';
 	const TRUNG_BINH = 'TRUNG_BINH';
 	const KHA = 'KHA';
 	const GIOI = 'GIOI';
+	
+	public function getCategoryTrans() {
+		if($this->isGradeRetention()) {
+			return 'Ở LẠI';
+		}
+		if($this->category === self::YEU) {
+			return 'Ở LẠI';
+		}
+		if($this->category === self::TRUNG_BINH) {
+			return 'TRUNG BÌNH';
+		}
+		if($this->category === self::KHA) {
+			return 'KHÁ';
+		}
+		if($this->category === self::GIOI) {
+			return 'GIỎI';
+		}
+	}
 	
 	/**
 	 * ID_REF
@@ -132,9 +150,9 @@ class BangDiem {
 			];
 		} elseif($hocKy === 2) {
 			$cols = [
-				'tbCCTerm2'    => 'tbCCTerm2',
-				'quizTerm2'    => 'quizTerm2',
-				'midTerm2'     => 'midTerm2',
+				'tbCCTerm2' => 'tbCCTerm2',
+				'quizTerm2' => 'quizTerm2',
+				'midTerm2'  => 'midTerm2',
 				
 				'finalTerm2-1' => 'finalTerm2',
 				'finalTerm2-2' => 'finalTerm2'

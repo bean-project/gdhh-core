@@ -2,17 +2,49 @@
 
 namespace App\Entity\HoSo\ThanhVien;
 
+use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemNhomWriter;
+use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemSpreadsheet;
 use App\Entity\HoSo\NamHoc;
 use App\Entity\HoSo\PhanBo;
 use App\Entity\HoSo\ThanhVien;
+use Liuggio\ExcelBundle\Factory;
 
 class HuynhTruong {
 	
 	/** @var PhanBo */
-	private $phanBo;
+	protected $phanBo;
 	
 	/** @var ThanhVien */
-	private $thanhVien;
+	protected $thanhVien;
+	
+	/** @var BangDiemSpreadsheet */
+	protected $bangDiemSpreadsheet;
+	
+	public function getBangDiemSpreadsheet() {
+		if(empty($this->bangDiemSpreadsheet)) {
+			$this->bangDiemSpreadsheet = new BangDiemSpreadsheet();
+			$this->bangDiemSpreadsheet->setChiDoan($this->phanBo->getChiDoan());
+		}
+		
+		return $this->bangDiemSpreadsheet;
+	}
+	
+	public function downloadBangDiemExcel($hocKy) {
+		
+		$bdWriter = new BangDiemNhomWriter($this);
+		
+		$bdWriter->writeBangDiemHocKy($hocKy);
+		$f              = $bdWriter->getSpreadsheetFactory();
+		$phpExcelObject = $bdWriter->getExcelObj();
+		// create the writer
+		$writer = $f->createWriter($phpExcelObject, 'Excel2007');
+		
+		$phpExcelObject->getActiveSheet()->calculateColumnWidths();
+		
+		// create the response
+		return $response = $f->createStreamedResponse($writer);
+	}
+	
 	
 	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHoc = null) {
 		if(empty($namHoc)) {

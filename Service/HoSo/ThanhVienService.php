@@ -3,6 +3,7 @@
 namespace App\Service\HoSo;
 
 
+use App\Entity\HocBa\BangDiem;
 use App\Entity\HoSo\PhanBo;
 use App\Entity\HoSo\ThanhVien;
 use App\Entity\HoSo\TruongPhuTrachDoi;
@@ -206,7 +207,7 @@ class ThanhVienService extends BaseService {
 		//////////////// Write Names and Code
 		/** @var TruongPhuTrachDoi $truongPT */
 		foreach($phanBo->getCacTruongPhuTrachDoi() as $truongPT) {
-			$phanBoHangNam = $truongPT->getDoiNhomGiaoLy()->getPhanBoHangNam();
+			$phanBoHangNam = $truongPT->getDoiNhomGiaoLy()->getPhanBoThieuNhi();
 			/** @var PhanBo $phanBo */
 			foreach($phanBoHangNam as $phanBo) {
 				$chiDoan = $phanBo->getChiDoan();
