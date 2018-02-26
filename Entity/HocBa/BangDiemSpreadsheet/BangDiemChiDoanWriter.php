@@ -64,7 +64,7 @@ class BangDiemChiDoanWriter extends AbstractBangDiemWriter {
 	public function getPhanBoThieuNhi(): Collection {
 		$phanBoHangNam  = [];
 		$phanBo         = $this->huynhTruong->getPhanBo();
-		$phanBoThieuNhi = $phanBo->sortCacPhanBo($this->huynhTruong->getThanhVien()->getThuKyChiDoanObj()->getCacPhanBoThieuNhiPhuTrach());
+		$phanBoThieuNhi = $phanBo->sortCacPhanBo($this->huynhTruong->getCacPhanBoThieuNhiPhuTrach());
 		
 		/** @var PhanBo $phanBo */
 		foreach($phanBoThieuNhi as $phanBo) {

@@ -3,6 +3,7 @@
 namespace App\Entity\HoSo;
 
 use App\Entity\Content\Base\AppContentEntity;
+use App\Entity\HoSo\ThanhVien\ChiDoanTruong;
 use App\Entity\HoSo\ThanhVien\HuynhTruong;
 use App\Entity\HoSo\ThanhVien\ThuKyChiDoan;
 use App\Entity\NLP\Sense;
@@ -237,8 +238,9 @@ class ThanhVien {
 	/** @var ThuKyChiDoan */
 	protected $thuKyChiDoanObj;
 	private static $booleanObjects = [
-		'thuKyChiDoan' => ThuKyChiDoan::class,
-		'huynhTruong'  => HuynhTruong::class
+		'thuKyChiDoan'  => ThuKyChiDoan::class,
+		'huynhTruong'   => HuynhTruong::class,
+		'chiDoanTruong' => ChiDoanTruong::class
 	];
 	
 	private function getBooleanObj($prop) {
@@ -258,6 +260,14 @@ class ThanhVien {
 		}
 		
 		return null;
+	}
+	
+	
+	/**
+	 * @return ChiDoanTruong
+	 */
+	public function getChiDoanTruongObj() {
+		return $this->getBooleanObj('chiDoanTruong');
 	}
 	
 	/**
