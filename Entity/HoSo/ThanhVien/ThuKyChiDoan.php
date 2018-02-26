@@ -2,6 +2,7 @@
 
 namespace App\Entity\HoSo\ThanhVien;
 
+use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemChiDoanWriter;
 use App\Entity\HoSo\DoiNhomGiaoLy;
 use App\Entity\HoSo\NamHoc;
 use App\Entity\HoSo\PhanBo;
@@ -11,6 +12,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ThuKyChiDoan extends HuynhTruong {
 	
 	private $cacPhanBoThieuNhiPhuTrachTheoNamHoc = [];
+	
+	public function downloadBangDiemExcel($hocKy) {
+		
+		$bdWriter = new BangDiemChiDoanWriter($this);
+		
+		$bdWriter->writeBangDiemHocKy($hocKy);
+		$f              = $bdWriter->getSpreadsheetFactory();
+		$phpExcelObject = $bdWriter->getExcelObj();
+		// create the writer
+		$writer = $f->createWriter($phpExcelObject, 'Excel2007');
+		
+		$phpExcelObject->getActiveSheet()->calculateColumnWidths();
+		
+		// create the response
+		return $response = $f->createStreamedResponse($writer);
+	}
+	
 	
 	public function isThieuNhiCungChiDoan(PhanBo $phanBo) {
 		if(empty($this->phanBo)) {
@@ -25,24 +43,32 @@ class ThuKyChiDoan extends HuynhTruong {
 	 *
 	 * @return ArrayCollection|null
 	 */
-	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHoc = null) {
+	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHoc = null, $phaiCoDoi = false) {
 		if(empty($namHoc)) {
-			if(array_key_exists(0, $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc)) {
-				return $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[0];
-			}
+			$namHoc = 0;
 		}
+		if(array_key_exists($namHoc, $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc)) {
+			return $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[0];
+		}
+		
 		if(empty($this->phanBo)) {
 			return null;
+		}
+		
+		if(empty($phaiCoDoi)) {
+			$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = $this->phanBo->sortCacPhanBo($this->phanBo->getChiDoan()->getPhanBoThieuNhi(true));
+
+			return $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ];
 		}
 		
 		$phanBoThieuNhi = new ArrayCollection();
 		$cacDngl        = $this->phanBo->getChiDoan()->getCacDoiNhomGiaoLy();
 		/** @var DoiNhomGiaoLy $dngl */
 		foreach($cacDngl as $dngl) {
-			$phanBoThieuNhi = new ArrayCollection(array_merge($phanBoThieuNhi->toArray(), $dngl->getPhanBoThieuNhi()->toArray()));
+			$phanBoThieuNhi = new ArrayCollection(array_merge($phanBoThieuNhi->toArray(), $dngl->getPhanBoThieuNhi(true)->toArray()));
 		}
 		
-		$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[0] = $phanBoThieuNhi = PhanBo::sortCacPhanBo($phanBoThieuNhi);
+		$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = $phanBoThieuNhi = PhanBo::sortCacPhanBo($phanBoThieuNhi);
 		
 		return $phanBoThieuNhi;
 	}
@@ -54,7 +80,7 @@ class ThuKyChiDoan extends HuynhTruong {
 	 * @return bool
 	 */
 	public function coTheNopBangDiem($hocKy) {
-		$hocKy = intval($hocKy);
+		$hocKy   = intval($hocKy);
 		$chiDoan = $this->phanBo->getChiDoan();
 		
 		if($hocKy === 1 && $chiDoan->isHoanTatBangDiemHK1()) {

@@ -1,6 +1,6 @@
 <?php
 namespace App\Entity\HoSo\ThanhVien;
 
-class ChiDoanTruong extends HuynhTruong {
+class ChiDoanTruong extends ThuKyChiDoan {
 	
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity\HocBa\BangDiemSpreadsheet;
 
+use App\Entity\HocBa\BangDiem;
 use App\Entity\HoSo\ChiDoan;
 use App\Entity\HoSo\PhanBo;
 use App\Entity\HoSo\ThanhVien\HuynhTruong;

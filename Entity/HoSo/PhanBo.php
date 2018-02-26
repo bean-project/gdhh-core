@@ -87,13 +87,12 @@ class PhanBo {
 		}
 		
 		
-		
-		$this->cacPhanBoThieuNhiDoMinhPhuTrach = self::sortCacPhanBo($phanBoHangNam);
+		$this->cacPhanBoThieuNhiDoMinhPhuTrach = $this->sortCacPhanBo($phanBoHangNam);
 		
 		return $this->cacPhanBoThieuNhiDoMinhPhuTrach;
 	}
 	
-	public static function sortCacPhanBo(ArrayCollection $phanBoHangNam) {
+	public function sortCacPhanBo(ArrayCollection $phanBoHangNam) {
 		if($phanBoHangNam->count() > 0) {
 			$array       = $phanBoHangNam->toArray();
 			$phanBoArray = [];
@@ -113,10 +112,11 @@ class PhanBo {
 			foreach($sortedArray as $id => $name) {
 				$returnArray[] = $phanBoArray[ $id ];
 			}
-			$phanBoHangNam = new ArrayCollection(($returnArray));
 			
-			return $phanBoHangNam;
+			return new ArrayCollection(($returnArray));
 		}
+		
+		return $phanBoHangNam;
 	}
 	
 	/**

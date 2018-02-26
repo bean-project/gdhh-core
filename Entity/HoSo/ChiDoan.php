@@ -110,31 +110,54 @@ class ChiDoan {
 	
 	private $phanBoHangNamSorted = false;
 	
+	/** @var ArrayCollection */
+	private $phanBoThieuNhi;
+	
+	public function getPhanBoThieuNhi($enabled = null) {
+		$pb = $this->getPhanBoHangNam();
+		if( ! empty($this->phanBoThieuNhi)) {
+			return $this->phanBoThieuNhi;
+		}
+
+		$this->phanBoThieuNhi = new ArrayCollection();
+		/** @var PhanBo $phanBo */
+		foreach($pb as $phanBo) {
+			if($phanBo->getThanhVien()->isThieuNhi()) {
+				if($enabled === null || $enabled && $phanBo->getThanhVien()->isEnabled() || ! $enabled && ! $phanBo->getThanhVien()->isEnabled()) {
+					$phanBo->createBangDiem();
+					$this->phanBoThieuNhi->add($phanBo);
+				}
+			}
+		}
+		
+		return $this->phanBoThieuNhi;
+	}
+	
 	/**
 	 * @return ArrayCollection
 	 */
 	public
 	function getPhanBoHangNam() {
-		if( ! $this->phanBoHangNamSorted) {
-			$array       = $this->phanBoHangNam->toArray();
-			$phanBoArray = [];
-			$sortedArray = [];
-			$returnArray = [];
-			/** @var PhanBo $phanBo */
-			foreach($array as $phanBo) {
-				$firstName                       = $phanBo->getThanhVien()->getFirstname();
-				$sortedArray[ $phanBo->getId() ] = $firstName;
-				$phanBoArray[ $phanBo->getId() ] = $phanBo;
-			}
-			$this->phanBoHangNamSorted = true;
-			$collator                  = new \Collator('vi_VN');
-//			natcasesort()
-			$collator->asort($sortedArray);
-			foreach($sortedArray as $id => $name) {
-				$returnArray[] = $phanBoArray[ $id ];
-			}
-			$this->phanBoHangNam = new ArrayCollection(($returnArray));
-		}
+//		if( ! $this->phanBoHangNamSorted) {
+//			$array       = $this->phanBoHangNam->toArray();
+//			$phanBoArray = [];
+//			$sortedArray = [];
+//			$returnArray = [];
+//			/** @var PhanBo $phanBo */
+//			foreach($array as $phanBo) {
+//				$firstName                       = $phanBo->getThanhVien()->getFirstname();
+//				$sortedArray[ $phanBo->getId() ] = $firstName;
+//				$phanBoArray[ $phanBo->getId() ] = $phanBo;
+//			}
+//			$this->phanBoHangNamSorted = true;
+//			$collator                  = new \Collator('vi_VN');
+////			natcasesort()
+//			$collator->asort($sortedArray);
+//			foreach($sortedArray as $id => $name) {
+//				$returnArray[] = $phanBoArray[ $id ];
+//			}
+//			$this->phanBoHangNam = new ArrayCollection(($returnArray));
+//		}
 		
 		return $this->phanBoHangNam;
 	}
