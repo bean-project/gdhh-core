@@ -17,7 +17,7 @@ class BangDiemNhomWriter extends AbstractBangDiemWriter {
 		}
 		$chiDoan = $truong->getPhanBo()->getChiDoan();
 		
-		parent::writeHeading($hocKy, $namHocId, $chiDoan, $truong);
+		$this->writeBaseHeading($hocKy, $namHocId, $chiDoan, $truong);
 		
 		$sWriter = $this->sWriter;
 		$sWriter->goDown();
@@ -61,11 +61,26 @@ class BangDiemNhomWriter extends AbstractBangDiemWriter {
 		$sWriter->goDown();
 	}
 	
+//	public function getPhanBoThieuNhi(): Collection {
+//		$phanBoHangNam = [];
+//		/** @var TruongPhuTrachDoi $truongPT */
+//		foreach($this->huynhTruong->getPhanBo()->getCacTruongPhuTrachDoi() as $truongPT) {
+//			$phanBoHangNam = array_merge($phanBoHangNam, $truongPT->getDoiNhomGiaoLy()->getPhanBoThieuNhi()->toArray());
+//		}
+//
+//		return new ArrayCollection($phanBoHangNam);
+//	}
+	
 	public function getPhanBoThieuNhi(): Collection {
-		$phanBoHangNam = [];
-		/** @var TruongPhuTrachDoi $truongPT */
-		foreach($this->huynhTruong->getPhanBo()->getCacTruongPhuTrachDoi() as $truongPT) {
-			$phanBoHangNam = array_merge($phanBoHangNam, $truongPT->getDoiNhomGiaoLy()->getPhanBoThieuNhi()->toArray());
+		$phanBoHangNam  = [];
+		$phanBo         = $this->huynhTruong->getPhanBo();
+		$phanBoThieuNhi = $phanBo->sortCacPhanBo($this->huynhTruong->getCacPhanBoThieuNhiPhuTrach());
+		
+		/** @var PhanBo $phanBo */
+		foreach($phanBoThieuNhi as $phanBo) {
+			if($phanBo->getThanhVien()->isEnabled()) {
+				$phanBoHangNam[] = $phanBo;
+			}
 		}
 		
 		return new ArrayCollection($phanBoHangNam);

@@ -2,36 +2,22 @@
 
 namespace App\Entity\HoSo\ThanhVien;
 
-use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemChiDoanWriter;
-use App\Entity\HoSo\DoiNhomGiaoLy;
+use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemPhanDoanWriter;
+use App\Entity\HocBa\BangDiemSpreadsheet\BangDiemXuDoanWriter;
+use App\Entity\HoSo\ChiDoan;
 use App\Entity\HoSo\NamHoc;
-use App\Entity\HoSo\PhanBo;
 use App\Entity\HoSo\ThanhVien;
 use Doctrine\Common\Collections\ArrayCollection;
 
-class ThuKyChiDoan extends HuynhTruong {
-	
+class BanQuanTri extends ChiDoanTruong {
 	protected function createBangDiemWriter() {
-		return new BangDiemChiDoanWriter($this);
+		return new BangDiemXuDoanWriter($this);
 	}
 	
-	public function isThieuNhiCungChiDoan(PhanBo $phanBo) {
-		if(empty($this->phanBo)) {
-			return false;
-		}
-		
-		return $this->phanBo->getChiDoan()->getId() === $phanBo->getChiDoan()->getId();
-	}
-	
-	/**
-	 * @param NamHoc|null $namHocObj
-	 *
-	 * @return ArrayCollection|null
-	 */
 	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHocObj = null, $phaiCoDoi = false) {
 		if(empty($namHocObj)) {
 			$namHoc = 0;
-		}else{
+		} else {
 			$namHoc = $namHocObj->getId();
 		}
 		
@@ -44,7 +30,14 @@ class ThuKyChiDoan extends HuynhTruong {
 		}
 		
 		if(empty($phaiCoDoi)) {
-			$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = $this->phanBo->sortCacPhanBo($this->phanBo->getChiDoan()->getPhanBoThieuNhi(true));
+			$dsChiDoan           = $this->phanBo->getNamHoc()->getChiDoan();
+			$phanBoThieuNhiArray = [];
+			/** @var ChiDoan $cd */
+			foreach($dsChiDoan as $cd) {
+				$phanBoThieuNhiArray = array_merge($phanBoThieuNhiArray, $cd->getPhanBoThieuNhi(true)->toArray());
+			}
+			
+			$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = $this->phanBo->sortCacPhanBo(new ArrayCollection($phanBoThieuNhiArray));
 			
 			return $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ];
 		}
@@ -61,24 +54,4 @@ class ThuKyChiDoan extends HuynhTruong {
 		return $phanBoThieuNhi;
 	}
 	
-	
-	/**
-	 * @param $hocKy
-	 *
-	 * @return bool
-	 */
-	public function coTheNopBangDiem($hocKy) {
-		$hocKy   = intval($hocKy);
-		$chiDoan = $this->phanBo->getChiDoan();
-		
-		if($hocKy === 1 && $chiDoan->isHoanTatBangDiemHK1()) {
-			return false;
-		}
-		
-		if($hocKy === 2 && $chiDoan->isHoanTatBangDiemHK2()) {
-			return false;
-		}
-		
-		return true;
-	}
 }

@@ -3,8 +3,10 @@
 namespace App\Entity\HoSo;
 
 use App\Entity\Content\Base\AppContentEntity;
+use App\Entity\HoSo\ThanhVien\BanQuanTri;
 use App\Entity\HoSo\ThanhVien\ChiDoanTruong;
 use App\Entity\HoSo\ThanhVien\HuynhTruong;
+use App\Entity\HoSo\ThanhVien\PhanDoanTruong;
 use App\Entity\HoSo\ThanhVien\ThuKyChiDoan;
 use App\Entity\NLP\Sense;
 use App\Entity\User\User;
@@ -227,6 +229,10 @@ class ThanhVien {
 		return $cd;
 	}
 	
+	public function isBanQuanTri() {
+		return $this->isBQT();
+	}
+	
 	public function isBQT() {
 		return $this->xuDoanPhoNgoai || $this->xuDoanPhoNoi || $this->xuDoanTruong || $this->thuKyXuDoan;
 	}
@@ -237,15 +243,25 @@ class ThanhVien {
 	
 	/** @var ThuKyChiDoan */
 	protected $thuKyChiDoanObj;
+	/** @var HuynhTruong */
+	protected $huynhTruongObj;
+	/** @var ChiDoan */
+	protected $chiDoanObj;
+	/** @var PhanDoanTruong */
+	protected $phanDoanTruongObj;
+	
 	private static $booleanObjects = [
-		'thuKyChiDoan'  => ThuKyChiDoan::class,
-		'huynhTruong'   => HuynhTruong::class,
-		'chiDoanTruong' => ChiDoanTruong::class
+		'thuKyChiDoan'   => ThuKyChiDoan::class,
+		'huynhTruong'    => HuynhTruong::class,
+		'chiDoanTruong'  => ChiDoanTruong::class,
+		'phanDoanTruong' => PhanDoanTruong::class,
+		'banQuanTri'     => BanQuanTri::class
 	];
 	
 	private function getBooleanObj($prop) {
 		if(in_array($prop, array_keys(self::$booleanObjects))) {
-			if(empty($this->$prop)) {
+			$isProp = 'is' . ucfirst($prop);
+			if(empty($this->$isProp())) {
 				return null;
 			}
 			$propObj = $prop . 'Obj';
@@ -262,6 +278,19 @@ class ThanhVien {
 		return null;
 	}
 	
+	/**
+	 * @return BanQuanTri
+	 */
+	public function getBanQuanTriObj() {
+		return $this->getBooleanObj('banQuanTri');
+	}
+	
+	/**
+	 * @return PhanDoanTruong
+	 */
+	public function getPhanDoanTruongObj() {
+		return $this->getBooleanObj('phanDoanTruong');
+	}
 	
 	/**
 	 * @return ChiDoanTruong
@@ -277,24 +306,11 @@ class ThanhVien {
 		return $this->getBooleanObj('thuKyChiDoan');
 	}
 	
-	
-	/** @var HuynhTruong */
-	protected $huynhTruongObj;
-	
 	/**
 	 * @return HuynhTruong
 	 */
 	public function getHuynhTruongObj() {
 		return $this->getBooleanObj('huynhTruong');
-//		if(empty($this->huynhTruong)) {
-//			return null;
-//		}
-//		if(empty($this->huynhTruongObj)) {
-//			$this->huynhTruongObj = new HuynhTruong();
-//			$this->huynhTruongObj->setThanhVien($this);
-//		}
-//
-//		return $this->huynhTruongObj;
 	}
 	
 	/**

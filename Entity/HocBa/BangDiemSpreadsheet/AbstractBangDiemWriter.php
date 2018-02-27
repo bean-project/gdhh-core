@@ -60,8 +60,9 @@ abstract class AbstractBangDiemWriter {
 		
 		return $sWriter;
 	}
+	protected abstract function writeHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null);
 	
-	protected function writeHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null) {
+	protected function writeBaseHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null) {
 		$sWriter = $this->sWriter;
 		
 		$sWriter->writeCell("BẢNG ĐIỂM HỌC KỲ " . $hocKy);

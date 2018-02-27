@@ -9,7 +9,7 @@ use App\Entity\HoSo\TruongPhuTrachDoi;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class BangDiemChiDoanWriter extends BangDiemNhomWriter {
+class BangDiemPhanDoanWriter extends BangDiemChiDoanWriter {
 	
 	public function writeHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null) {
 		if(empty($truong)) {
@@ -18,12 +18,11 @@ class BangDiemChiDoanWriter extends BangDiemNhomWriter {
 		$chiDoan = $truong->getPhanBo()->getChiDoan();
 		
 		$this->writeBaseHeading($hocKy, $namHocId, $chiDoan, $truong);
-		
 		$sWriter = $this->sWriter;
 		$sWriter->goDown();
 		
 		$truongPhuTrachStr = $truong->getThanhVien()->getName();
-		$sWriter->writeCell(sprintf('CHI ĐOÀN: %d', $chiDoan->getNumber()));
+		$sWriter->writeCell(sprintf('PHÂN ĐOÀN: %d', $chiDoan->getPhanDoan()));
 		$sWriter->mergeCellsRight(13);
 		$sWriter->getCurrentCellStyle()->applyFromArray(array(
 			'font'      => array(
@@ -41,7 +40,7 @@ class BangDiemChiDoanWriter extends BangDiemNhomWriter {
 		$sWriter->getCurrentRowDimension()->setRowHeight(25);
 		$sWriter->goDown();
 		
-		$sWriter->writeCell(sprintf('Phụ-trách: %s', $truongPhuTrachStr));
+		$sWriter->writeCell(sprintf('Tải-về bởi: %s', $truongPhuTrachStr));
 		$sWriter->mergeCellsRight(13);
 		$sWriter->getCurrentCellStyle()->applyFromArray(array(
 			'font'      => array(
@@ -60,4 +59,5 @@ class BangDiemChiDoanWriter extends BangDiemNhomWriter {
 		$sWriter->goDown();
 		$sWriter->goDown();
 	}
+	
 }

@@ -11,6 +11,8 @@ use Liuggio\ExcelBundle\Factory;
 
 class HuynhTruong {
 	
+	protected $cacPhanBoThieuNhiPhuTrachTheoNamHoc = [];
+	
 	/** @var PhanBo */
 	protected $phanBo;
 	
@@ -29,9 +31,13 @@ class HuynhTruong {
 		return $this->bangDiemSpreadsheet;
 	}
 	
+	protected function createBangDiemWriter() {
+		return new BangDiemNhomWriter($this);
+	}
+	
 	public function downloadBangDiemExcel($hocKy) {
 		
-		$bdWriter = new BangDiemNhomWriter($this);
+		$bdWriter = $this->createBangDiemWriter();
 		
 		$bdWriter->writeBangDiemHocKy($hocKy);
 		$f              = $bdWriter->getSpreadsheetFactory();
@@ -45,13 +51,22 @@ class HuynhTruong {
 		return $response = $f->createStreamedResponse($writer);
 	}
 	
-	
-	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHoc = null) {
-		if(empty($namHoc)) {
+	public function getCacPhanBoThieuNhiPhuTrach(NamHoc $namHocObj = null) {
+		if(empty($namHocObj)) {
+			$namHoc = 0;
+		}else{
+			$namHoc = $namHocObj->getId();
+		}
+		
+		if( ! array_key_exists($namHoc, $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc)) {
 			if( ! empty($this->phanBo)) {
-				return $this->phanBo->getCacPhanBoThieuNhiPhuTrach();
+				$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = $this->phanBo->getCacPhanBoThieuNhiPhuTrach();
+			} else {
+				$this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ] = null;
 			}
 		}
+		return $this->cacPhanBoThieuNhiPhuTrachTheoNamHoc[ $namHoc ];
+		
 	}
 	
 	public function isBangDiemReadOnly() {
