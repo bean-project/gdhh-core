@@ -22,7 +22,14 @@ class BangDiemPhanDoanWriter extends BangDiemChiDoanWriter {
 		$sWriter->goDown();
 		
 		$truongPhuTrachStr = $truong->getThanhVien()->getName();
-		$sWriter->writeCell(sprintf('PHÂN ĐOÀN: %d', $chiDoan->getPhanDoan()));
+		
+				if($chiDoan !== null) {
+			$phanDoan = $chiDoan->getPhanDoan();
+		} else {
+			$phanDoan = $truong->getPhanBo()->getPhanDoan();
+		}
+		$sWriter->writeCell(sprintf('PHÂN ĐOÀN: %d', $phanDoan));
+
 		$sWriter->mergeCellsRight(13);
 		$sWriter->getCurrentCellStyle()->applyFromArray(array(
 			'font'      => array(
