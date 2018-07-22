@@ -60,6 +60,7 @@ abstract class AbstractBangDiemWriter {
 		
 		return $sWriter;
 	}
+	
 	protected abstract function writeHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null);
 	
 	protected function writeBaseHeading($hocKy, $namHocId, ChiDoan $chiDoan = null, HuynhTruong $truong = null) {
@@ -272,6 +273,12 @@ abstract class AbstractBangDiemWriter {
 			$sWriter->getCurrentColumnDimension()->setWidth(20);
 			$sWriter->writeCell(' XẾP-LOẠI ');
 			
+			$sWriter->setCurrentCellColor('FF9900');
+			$sWriter->getCurrentCellStyle()->applyFromArray($style1);
+			$sWriter->mergeCellsDown(2);
+			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
+			$sWriter->getCurrentColumnDimension()->setWidth(20);
+			$sWriter->writeCell(' KHEN-THƯỞNG ');
 		}
 		
 		$sWriter->goDown(2);
@@ -420,9 +427,11 @@ abstract class AbstractBangDiemWriter {
 				$sWriter->alignCurrentCellCenter();
 				$sWriter->writeCellAndGoRight($bangDiem->getSundayTickets());
 				
+				$sWriter->alignCurrentCellCenter();
+				$sWriter->writeCellAndGoRight($bangDiem->getCategoryTrans());
 				
 				$sWriter->alignCurrentCellCenter();
-				$sWriter->writeCell($bangDiem->getCategoryTrans());
+				$sWriter->writeCell($bangDiem->isAwarded() ? 'Có' : 'Không');
 				
 			}
 		}
