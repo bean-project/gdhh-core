@@ -271,14 +271,35 @@ abstract class AbstractBangDiemWriter {
 			$sWriter->mergeCellsDown(2);
 			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
 			$sWriter->getCurrentColumnDimension()->setWidth(20);
-			$sWriter->writeCell(' XẾP-LOẠI ');
+			$sWriter->writeCellAndGoRight(' XẾP-LOẠI ');
 			
 			$sWriter->setCurrentCellColor('FF9900');
 			$sWriter->getCurrentCellStyle()->applyFromArray($style1);
 			$sWriter->mergeCellsDown(2);
 			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
 			$sWriter->getCurrentColumnDimension()->setWidth(20);
-			$sWriter->writeCell(' KHEN-THƯỞNG ');
+			$sWriter->writeCellAndGoRight(' KHEN-THƯỞNG ');
+			
+			$sWriter->setCurrentCellColor('FF0000');
+			$sWriter->getCurrentCellStyle()->applyFromArray($style1);
+			$sWriter->mergeCellsDown(2);
+			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
+			$sWriter->getCurrentColumnDimension()->setWidth(20);
+			$sWriter->writeCellAndGoRight(' PHÂN-ĐOÀN ');
+			
+			$sWriter->setCurrentCellColor('FF0000');
+			$sWriter->getCurrentCellStyle()->applyFromArray($style1);
+			$sWriter->mergeCellsDown(2);
+			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
+			$sWriter->getCurrentColumnDimension()->setWidth(20);
+			$sWriter->writeCellAndGoRight(' CHI-ĐOÀN ');
+			
+			$sWriter->setCurrentCellColor('FF0000');
+			$sWriter->getCurrentCellStyle()->applyFromArray($style1);
+			$sWriter->mergeCellsDown(2);
+			$sWriter->getCurrentColumnDimension()->setAutoSize(false);
+			$sWriter->getCurrentColumnDimension()->setWidth(20);
+			$sWriter->writeCell(' TRƯỞNG PHỤ-TRÁCH ');
 		}
 		
 		$sWriter->goDown(2);
@@ -431,8 +452,21 @@ abstract class AbstractBangDiemWriter {
 				$sWriter->writeCellAndGoRight($bangDiem->getCategoryTrans());
 				
 				$sWriter->alignCurrentCellCenter();
-				$sWriter->writeCell($bangDiem->isAwarded() ? 'Có' : 'Không');
+				$sWriter->writeCellAndGoRight($bangDiem->isAwarded() ? 'Có' : 'Không');
 				
+				$sWriter->alignCurrentCellCenter();
+				$sWriter->writeCellAndGoRight($bangDiem->getPhanBo()->getPhanDoan());
+				
+				$sWriter->alignCurrentCellCenter();
+				$sWriter->writeCellAndGoRight($bangDiem->getPhanBo()->getChiDoan()->getName());
+				
+				$sWriter->alignCurrentCellCenter();
+				$dngl = $bangDiem->getPhanBo()->getDoiNhomGiaoLy();
+				if(empty($dngl)) {
+					$sWriter->writeCell('KHÔNG CÓ ĐỘI');
+				} else {
+					$sWriter->writeCell($dngl->getTenCacTruongPhuTrach());
+				}
 			}
 		}
 		

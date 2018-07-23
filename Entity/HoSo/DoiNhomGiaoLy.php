@@ -37,7 +37,7 @@ class DoiNhomGiaoLy {
 		/** @var TruongPhuTrachDoi $truong */
 		foreach($cacTruong as $truong) {
 			$tv  = $truong->getPhanBo()->getThanhVien();
-			$str .= $tv->getTitle() . ' ' . $tv->getFirstname();
+			$str .= $tv->getTitle() . ' ' . $tv->getFirstname() . ' ';
 		}
 		
 		return $str;
