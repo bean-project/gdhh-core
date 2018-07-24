@@ -217,11 +217,12 @@ class BangDiem {
 			}
 			if(($sundayTickets = $this->sundayTickets) >= $namHoc->getPhieuLenLop() && $this->category !== self::YEU) {
 				$this->gradeRetention = false;
-				if($sundayTickets >= $namHoc->getPhieuKhenThuong() && $this->tbYear >= $namHoc->getDiemKha()) {
-					$this->awarded = true;
-				}
 			} else {
 				$this->gradeRetention = true;
+			}
+			
+			if($sundayTickets >= $namHoc->getPhieuKhenThuong() && $this->tbYear >= $namHoc->getDiemKha()) {
+				$this->awarded = true;
 			}
 		}
 		
