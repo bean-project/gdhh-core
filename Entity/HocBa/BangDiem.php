@@ -223,6 +223,8 @@ class BangDiem {
 			
 			if($sundayTickets >= $namHoc->getPhieuKhenThuong() && $this->tbYear >= $namHoc->getDiemKha()) {
 				$this->awarded = true;
+			} else {
+				$this->awarded = false;
 			}
 		}
 		
